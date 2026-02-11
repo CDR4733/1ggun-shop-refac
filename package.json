@@ -1,0 +1,26 @@
+{
+  "name": "1ggun-shop-refac",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/CDR4733/1ggun-shop-refac.git",
+  "author": "CDR4733 <shsing2@naver.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "@prisma/client": "6",
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0",
+    "globals": "^17.3.0",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.8.1",
+    "prisma": "6"
+  }
+}
