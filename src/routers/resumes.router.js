@@ -37,14 +37,40 @@ resumesRouter.post("/", createResumeValidator, async (req, res, next) => {
 /** 이력서 목록 조회(R-A) API **/
 resumesRouter.get("/", async (req, res, next) => {
   try {
-    // 1. 데이터
-    const data = null;
+    // 1. 데이터 : user, sort
+    const user = req.user;
+    let { sort } = req.query;
+    sort = sort?.toLowerCase();
+    if (sort !== "desc" && sort !== "asc") {
+      sort = "desc"; // default는 desc
+    }
 
-    // 결과 반환
+    // 2. user가 작성한 resumes 모두 조회
+    const datas = await prisma.resume.findMany({
+      where: { userId: user.userId },
+      orderBy: {
+        createdAt: sort,
+      },
+      include: {
+        user: true, // users 테이블과의 릴레이션으로 가져오기
+      },
+    });
+    // 2-1. 데이터 가공
+    const filteredDatas = datas.map((e) => ({
+      resumeId: e.resumeId,
+      name: e.user.name,
+      resumeTitle: e.resumeTitle,
+      resumeContent: e.resumeContent,
+      resumeStatus: e.resumeStatus,
+      createdAt: e.createdAt,
+      updatedAt: e.updatedAt,
+    }));
+
+    // 3. 결과 반환
     return res.status(HTTP_STATUS.OK).json({
       status: HTTP_STATUS.OK,
       message: MESSAGES.RESUMES.READ_LIST.SUCCEED,
-      data: data,
+      data: filteredDatas,
     });
   } catch (err) {
     next(err);

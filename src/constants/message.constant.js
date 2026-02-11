@@ -60,6 +60,7 @@ export const MESSAGES = {
         REQUIRED: "자기소개를 입력해 주세요.",
         MIN_LENGTH: `자기소개는 ${RESUME_MIN_LENGTH}자 이상 작성해야 합니다.`,
       },
+      NON_FOUND: "이력서가 존재하지 않습니다.",
     },
     CREATE: {
       SUCCEED: "이력서 생성에 성공했습니다.",
