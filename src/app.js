@@ -3,6 +3,7 @@ import "./utils/prisma.util.js";
 import { SERVER_PORT } from "./constants/env.constant.js";
 import { errorHandler } from "./middlewares/error-handler.middleware.js";
 import { HTTP_STATUS } from "./constants/http-status.constant.js";
+import { apiRouter } from "./routers/index.js";
 
 // express 필수 세트
 const app = express();
@@ -13,6 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/health-check", (req, res) => {
   return res.status(HTTP_STATUS.OK).json(`I'm healthy!`);
 });
+
+// router와 통합관리하는 index(apiRouter)로 연결
+app.use("/", apiRouter);
 
 // 에러핸들러 미들웨어 사용
 app.use(errorHandler);
