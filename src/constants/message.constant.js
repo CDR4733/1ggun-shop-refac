@@ -23,6 +23,8 @@ export const MESSAGES = {
         NO_USER: "인증 정보와 일치하는 사용자가 없습니다.",
         INVALID: "인증 정보가 유효하지 않습니다.",
       },
+      UNAUTHORIZED: "인증 정보가 유효하지 않습니다.",
+      FORBIDDEN: "접근 권한이 없습니다.",
     },
     SIGN_UP: {
       SUCCEED: "회원 가입에 성공했습니다.",
