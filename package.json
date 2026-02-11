@@ -15,7 +15,8 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.4",
     "express": "^5.2.1",
-    "joi": "^18.0.2"
+    "joi": "^18.0.2",
+    "jsonwebtoken": "^9.0.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
