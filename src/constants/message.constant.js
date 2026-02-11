@@ -27,5 +27,11 @@ export const MESSAGES = {
         },
       },
     },
+    LOG_IN: {
+      SUCCEED: "로그인에 성공했습니다.",
+      FAIL: {
+        UNAUTHORIZED: "인증 정보가 유효하지 않습니다.",
+      },
+    },
   },
 };
