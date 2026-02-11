@@ -176,9 +176,34 @@ resumesRouter.patch(
 resumesRouter.delete("/:resumeId", async (req, res, next) => {
   try {
     // 1. 데이터
-    const data = null;
+    const user = req.user;
+    const { resumeId } = req.params;
+    const { resumeTitle, resumeContent } = req.body;
 
-    // 결과 반환
+    // 2. 삭제할 이력서 조회
+    const existingResume = await prisma.resume.findUnique({
+      where: {
+        resumeId: +resumeId,
+        userId: +user.userId,
+      },
+    });
+    // 2-1. 해당 이력서가 존재하지 않으면 (404)
+    if (!existingResume) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        status: HTTP_STATUS.NOT_FOUND,
+        message: MESSAGES.RESUMES.COMMON.NON_FOUND,
+      });
+    }
+
+    // 3. 이력서 삭제
+    const data = await prisma.resume.delete({
+      where: {
+        resumeId: +resumeId,
+        userId: +user.userId,
+      },
+    });
+
+    // 4. 결과 반환
     return res.status(HTTP_STATUS.OK).json({
       status: HTTP_STATUS.OK,
       message: MESSAGES.RESUMES.DELETE.SUCCEED,
