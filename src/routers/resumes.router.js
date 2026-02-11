@@ -178,7 +178,6 @@ resumesRouter.delete("/:resumeId", async (req, res, next) => {
     // 1. 데이터
     const user = req.user;
     const { resumeId } = req.params;
-    const { resumeTitle, resumeContent } = req.body;
 
     // 2. 삭제할 이력서 조회
     const existingResume = await prisma.resume.findUnique({
