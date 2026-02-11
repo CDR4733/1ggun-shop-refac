@@ -73,6 +73,9 @@ export const MESSAGES = {
     },
     UPDATE: {
       SUCCEED: "이력서 수정에 성공했습니다.",
+      FAIL: {
+        NO_DATA: "수정할 정보를 입력해 주세요.",
+      },
     },
     DELETE: {
       SUCCEED: "이력서 삭제에 성공했습니다.",

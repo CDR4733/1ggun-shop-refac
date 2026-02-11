@@ -4,6 +4,7 @@ import { HTTP_STATUS } from "../constants/http-status.constant.js";
 import { MESSAGES } from "../constants/message.constant.js";
 
 import { createResumeValidator } from "../middlewares/validators/create-resume.validator.js";
+import { updateResumeValidator } from "../middlewares/validators/update-resume.validator.js";
 
 const resumesRouter = express.Router();
 
@@ -92,7 +93,7 @@ resumesRouter.get("/:resumeId", async (req, res, next) => {
       },
       include: { user: true }, // relation으로 user테이블 가져와!
     });
-    // 2-1. 해당 이력서가 존재하지 않으면?
+    // 2-1. 해당 이력서가 존재하지 않으면 (404)
     if (!data) {
       return res.status(HTTP_STATUS.NOT_FOUND).json({
         status: HTTP_STATUS.NOT_FOUND,
@@ -122,21 +123,54 @@ resumesRouter.get("/:resumeId", async (req, res, next) => {
 });
 
 /** 이력서 수정 API(U) **/
-resumesRouter.patch("/:resumeId", async (req, res, next) => {
-  try {
-    // 1. 데이터
-    const data = null;
+resumesRouter.patch(
+  "/:resumeId",
+  updateResumeValidator,
+  async (req, res, next) => {
+    try {
+      // 1. 데이터
+      const user = req.user;
+      const { resumeId } = req.params;
+      const { resumeTitle, resumeContent } = req.body;
 
-    // 결과 반환
-    return res.status(HTTP_STATUS.OK).json({
-      status: HTTP_STATUS.OK,
-      message: MESSAGES.RESUMES.UPDATE.SUCCEED,
-      data: data,
-    });
-  } catch (err) {
-    next(err);
-  }
-});
+      // 2. 수정할 이력서 조회
+      const existingResume = await prisma.resume.findUnique({
+        where: {
+          resumeId: +resumeId,
+          userId: +user.userId,
+        },
+      });
+      // 2-1. 해당 이력서가 존재하지 않으면 (404)
+      if (!existingResume) {
+        return res.status(HTTP_STATUS.NOT_FOUND).json({
+          status: HTTP_STATUS.NOT_FOUND,
+          message: MESSAGES.RESUMES.COMMON.NON_FOUND,
+        });
+      }
+
+      // 3. 이력서 수정
+      const data = await prisma.resume.update({
+        where: {
+          resumeId: +resumeId,
+          userId: +user.userId,
+        },
+        data: {
+          ...(resumeTitle && { resumeTitle: resumeTitle }),
+          ...(resumeContent && { resumeContent: resumeContent }),
+        },
+      });
+
+      // 4. 결과 반환
+      return res.status(HTTP_STATUS.OK).json({
+        status: HTTP_STATUS.OK,
+        message: MESSAGES.RESUMES.UPDATE.SUCCEED,
+        data: data,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 /** 이력서 삭제 API(D) **/
 resumesRouter.delete("/:resumeId", async (req, res, next) => {
