@@ -17,7 +17,7 @@ resumesRouter.post("/", createResumeValidator, async (req, res, next) => {
     // 2. DB에 데이터 생성
     const data = await prisma.resume.create({
       data: {
-        userId: user.userId,
+        userId: +user.userId,
         resumeTitle: resumeTitle,
         resumeContent: resumeContent,
       },
@@ -47,7 +47,7 @@ resumesRouter.get("/", async (req, res, next) => {
 
     // 2. user가 작성한 resumes 모두 조회
     const datas = await prisma.resume.findMany({
-      where: { userId: user.userId },
+      where: { userId: +user.userId },
       orderBy: {
         createdAt: sort,
       },
@@ -57,7 +57,7 @@ resumesRouter.get("/", async (req, res, next) => {
     });
     // 2-1. 데이터 가공
     const filteredDatas = datas.map((e) => ({
-      resumeId: e.resumeId,
+      resumeId: +e.resumeId,
       name: e.user.name,
       resumeTitle: e.resumeTitle,
       resumeContent: e.resumeContent,
@@ -81,13 +81,40 @@ resumesRouter.get("/", async (req, res, next) => {
 resumesRouter.get("/:resumeId", async (req, res, next) => {
   try {
     // 1. 데이터
-    const data = null;
+    const user = req.user;
+    const { resumeId } = req.params;
 
-    // 결과 반환
+    // 2. 해당 이력서 조회
+    const data = await prisma.resume.findUnique({
+      where: {
+        resumeId: +resumeId,
+        userId: +user.userId,
+      },
+      include: { user: true }, // relation으로 user테이블 가져와!
+    });
+    // 2-1. 해당 이력서가 존재하지 않으면?
+    if (!data) {
+      return res.status(HTTP_STATUS.NOT_FOUND).json({
+        status: HTTP_STATUS.NOT_FOUND,
+        message: MESSAGES.RESUMES.COMMON.NON_FOUND,
+      });
+    }
+    // 2-2. 데이터 가공
+    const filteredData = {
+      resumeId: +data.resumeId,
+      name: data.user.name,
+      resumeTitle: data.resumeTitle,
+      resumeContent: data.resumeContent,
+      resumeStatus: data.resumeStatus,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt,
+    };
+
+    // 3. 결과 반환
     return res.status(HTTP_STATUS.OK).json({
       status: HTTP_STATUS.OK,
       message: MESSAGES.RESUMES.READ_DETAIL.SUCCEED,
-      data: data,
+      data: filteredData,
     });
   } catch (err) {
     next(err);
