@@ -1,19 +1,28 @@
+import { MIN_PASSWORD_LENGTH } from "./auth.constant.js";
+
 export const MESSAGES = {
-  COMMON: {
-    EMAIL: {
-      REQUIRED: "이메일을 입력해 주세요.",
-    },
-    PASSWORD: {
-      REQUIRED: "비밀번호를 입력해 주세요.",
-    },
-    PASSWORD_CONFIRM: {
-      REQUIRED: "비밀번호 확인을 입력해 주세요.",
-    },
-    NAME: {
-      REQUIRED: "이름을 입력해 주세요.",
-    },
-  },
   AUTH: {
+    COMMON: {
+      EMAIL: {
+        REQUIRED: "이메일을 입력해 주세요.",
+      },
+      PASSWORD: {
+        REQUIRED: "비밀번호를 입력해 주세요.",
+      },
+      PASSWORD_CONFIRM: {
+        REQUIRED: "비밀번호 확인을 입력해 주세요.",
+      },
+      NAME: {
+        REQUIRED: "이름을 입력해 주세요.",
+      },
+      JWT: {
+        NO_TOKEN: "인증 정보가 없습니다.",
+        NOT_SUPPORTED: "지원하지 않는 인증 방식입니다.",
+        EXPIRED: "인증 정보가 만료되었습니다.",
+        NO_USER: "인증 정보와 일치하는 사용자가 없습니다.",
+        INVALID: "인증 정보가 유효하지 않습니다.",
+      },
+    },
     SIGN_UP: {
       SUCCEED: "회원 가입에 성공했습니다.",
       FAIL: {
@@ -22,7 +31,7 @@ export const MESSAGES = {
           DUPLICATED: "이미 가입된 사용자입니다.",
         },
         PASSWORD: {
-          MIN_LENGTH: "비밀번호는 6자리 이상이어야 합니다.",
+          MIN_LENGTH: `비밀번호는 ${MIN_PASSWORD_LENGTH}자리 이상이어야 합니다.`,
           NOT_MATCHED: "입력한 두 비밀번호가 일치하지 않습니다.",
         },
       },
@@ -31,6 +40,13 @@ export const MESSAGES = {
       SUCCEED: "로그인에 성공했습니다.",
       FAIL: {
         UNAUTHORIZED: "인증 정보가 유효하지 않습니다.",
+      },
+    },
+  },
+  USERS: {
+    READ: {
+      ME: {
+        SUCCEED: "내 정보 조회에 성공했습니다.",
       },
     },
   },
