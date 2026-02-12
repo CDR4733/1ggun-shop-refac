@@ -35,3 +35,11 @@ yarn start
 ```sh
 yarn dev
 ```
+
+# API 명세서
+[API 명세서 링크](https://shocking-flavor-85b.notion.site/API-MVP-303bc055defd805ebef3c13a4be6301e)
+https://shocking-flavor-85b.notion.site/API-MVP-303bc055defd805ebef3c13a4be6301e
+
+# ERD 설계도
+[ERD 설계도 링크](https://drawsql.app/teams/teamcdr/diagrams/1ggun-shop-refac)
+https://drawsql.app/teams/teamcdr/diagrams/1ggun-shop-refac
