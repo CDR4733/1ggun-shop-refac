@@ -278,43 +278,47 @@ resumesRouter.patch(
 );
 
 /** 로그 목록 조회 API(R-A) **/
-resumesRouter.get("/:resumeId/logs", async (req, res, next) => {
-  try {
-    // 1. Request
-    const resumeId = +req.params.resumeId;
+resumesRouter.get(
+  "/:resumeId/logs",
+  requireRoles([USER_ROLE.RECRUITER]),
+  async (req, res, next) => {
+    try {
+      // 1. Request
+      const resumeId = +req.params.resumeId;
 
-    // 2. 해당 resume의 로그 목록 조회
-    const datas = await prisma.resumeLog.findMany({
-      where: {
-        resumeId: resumeId,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      include: {
-        recruiter: true,
-      },
-    });
-    // 2-1. 데이터 가공
-    const filteredDatas = datas.map((e) => ({
-      lodId: e.logId,
-      recruiterName: e.recruiter.name,
-      resumeId: e.resumeId,
-      oldStatus: e.oldStatus,
-      newStatus: e.newStatus,
-      reason: e.reason,
-      createdAt: e.createdAt,
-    }));
+      // 2. 해당 resume의 로그 목록 조회
+      const datas = await prisma.resumeLog.findMany({
+        where: {
+          resumeId: resumeId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          recruiter: true,
+        },
+      });
+      // 2-1. 데이터 가공
+      const filteredDatas = datas.map((e) => ({
+        lodId: e.logId,
+        recruiterName: e.recruiter.name,
+        resumeId: e.resumeId,
+        oldStatus: e.oldStatus,
+        newStatus: e.newStatus,
+        reason: e.reason,
+        createdAt: e.createdAt,
+      }));
 
-    // 3. Response
-    return res.status(HTTP_STATUS.OK).json({
-      stats: HTTP_STATUS.OK,
-      message: MESSAGES.RESUMES.READ_LIST.LOG.SUCCEED,
-      data: filteredDatas,
-    });
-  } catch (err) {
-    next(err);
-  }
-});
+      // 3. Response
+      return res.status(HTTP_STATUS.OK).json({
+        stats: HTTP_STATUS.OK,
+        message: MESSAGES.RESUMES.READ_LIST.LOG.SUCCEED,
+        data: filteredDatas,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+);
 
 export { resumesRouter };
