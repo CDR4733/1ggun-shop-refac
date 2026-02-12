@@ -24,9 +24,11 @@ model User {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   // user-1:N-resumes
-  resumes    Resume[]
+  resumes      Resume[]
   // user-1:N-resumeLogs
-  resumeLogs ResumeLog[]
+  resumeLogs   ResumeLog[]
+  // user-1:1-refreshToken
+  refreshToken RefreshToken?
 
   @@map("users") // DB상에서 테이블 명을 "users"로 매핑한다.
 }
@@ -77,4 +79,17 @@ enum ResumeStatus {
   INTERVIEW1
   INTERVIEW2
   FINAL_PASS
+}
+
+model RefreshToken {
+  tokenId      Int      @id @default(autoincrement()) @map("token_id")
+  userId       Int      @unique @map("user_id")
+  refreshToken String   @map("refresh_token")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // refreshToken-1:1-user
+  user User @relation(fields: [userId], references: [userId])
+
+  @@map("refresh_tokens")
 }

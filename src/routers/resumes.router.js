@@ -8,7 +8,6 @@ import { createResumeValidator } from "../middlewares/validators/create-resume.v
 import { updateResumeValidator } from "../middlewares/validators/update-resume.validator.js";
 import { updateResumeStatusValidator } from "../middlewares/validators/update-resume-status.validator.js";
 import { requireRoles } from "../middlewares/require-roles.middleware.js";
-import e from "express";
 
 const resumesRouter = express.Router();
 
