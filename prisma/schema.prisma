@@ -22,7 +22,11 @@ model User {
   role      UserRole @default(APPLICANT)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  resumes   Resume[]
+
+  // user-1:N-resumes
+  resumes    Resume[]
+  // user-1:N-resumeLogs
+  resumeLogs ResumeLog[]
 
   @@map("users") // DB상에서 테이블 명을 "users"로 매핑한다.
 }
@@ -40,9 +44,30 @@ model Resume {
   resumeStatus  ResumeStatus @default(APPLY) @map("resume_status")
   createdAt     DateTime     @default(now()) @map("created_at")
   updatedAt     DateTime     @updatedAt @map("updated_at")
-  user          User         @relation(fields: [userId], references: [userId])
+
+  // resumes-N:1-user
+  user       User        @relation(fields: [userId], references: [userId])
+  // resume-1:N-resumeLogs
+  resumeLogs ResumeLog[]
 
   @@map("resumes") // DB상에서 테이블 명을 "resumes"로 매핑한다.
+}
+
+model ResumeLog {
+  logId       Int          @id @default(autoincrement()) @map("log_id")
+  recruiterId Int          @map("recruiter_id")
+  resumeId    Int          @map("resume_id")
+  oldStatus   ResumeStatus @map("old_status")
+  newStatus   ResumeStatus @map("new_status")
+  reason      String
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  // resumeLogs-N:1-user
+  recruiter User   @relation(fields: [recruiterId], references: [userId])
+  // resumeLogs-N:1-resume
+  resume    Resume @relation(fields: [resumeId], references: [resumeId])
+
+  @@map("resume_logs") // DB상에서 테이블 명을 "resume_logs"로 매핑한다.
 }
 
 enum ResumeStatus {
