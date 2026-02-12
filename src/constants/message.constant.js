@@ -47,6 +47,9 @@ export const MESSAGES = {
         UNAUTHORIZED: "인증 정보가 유효하지 않습니다.",
       },
     },
+    LOG_OUT: {
+      SUCCEED: "로그아웃에 성공했습니다.",
+    },
   },
   USERS: {
     READ: {

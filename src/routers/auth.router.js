@@ -97,6 +97,28 @@ authRouter.post("/log-in", logInValidator, async (req, res, next) => {
   }
 });
 
+/** 로그아웃 API **/
+authRouter.post("/log-out", requireRefreshToken, async (req, res, next) => {
+  try {
+    // 1. Request
+    const user = req.user;
+
+    // 2. DB에서 해당 user의 refresh token 삭제
+    await prisma.refreshToken.delete({ where: { userId: user.userId } });
+
+    // 3. Response
+    return res.status(HTTP_STATUS.OK).json({
+      status: HTTP_STATUS.OK,
+      message: MESSAGES.AUTH.LOG_OUT.SUCCEED,
+      data: {
+        userId: user.userId,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 /** 토큰 재발급 API **/
 authRouter.post("/re-token", requireRefreshToken, async (req, res, next) => {
   try {
