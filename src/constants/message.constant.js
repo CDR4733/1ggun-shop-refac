@@ -23,6 +23,8 @@ export const MESSAGES = {
         NO_USER: "인증 정보와 일치하는 사용자가 없습니다.",
         INVALID: "인증 정보가 유효하지 않습니다.",
       },
+      UNAUTHORIZED: "인증 정보가 유효하지 않습니다.",
+      FORBIDDEN: "접근 권한이 없습니다.",
     },
     SIGN_UP: {
       SUCCEED: "회원 가입에 성공했습니다.",
@@ -67,6 +69,9 @@ export const MESSAGES = {
     },
     READ_LIST: {
       SUCCEED: "이력서 목록 조회에 성공했습니다.",
+      LOG: {
+        SUCCEED: "이력서 로그 목록 조회에 성공했습니다.",
+      },
     },
     READ_DETAIL: {
       SUCCEED: "이력서 상세 조회에 성공했습니다.",
@@ -75,6 +80,14 @@ export const MESSAGES = {
       SUCCEED: "이력서 수정에 성공했습니다.",
       FAIL: {
         NO_DATA: "수정할 정보를 입력해 주세요.",
+      },
+      STATUS: {
+        SUCCEED: "이력서 지원 상태 변경에 성공했습니다.",
+        FAIL: {
+          INVALID_STATUS: "유효하지 않은 지원 상태입니다.",
+          NO_STATUS: "변경하고자 하는 지원 상태를 입력해 주세요.",
+          NO_REASON: "지원 상태 변경 사유를 입력해 주세요.",
+        },
       },
     },
     DELETE: {
